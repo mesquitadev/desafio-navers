@@ -36,7 +36,6 @@ const AuthProvider: React.FC = ({children}) => {
 
       if (token) {
         api.defaults.headers.authorization = `Bearer ${token}`;
-        console.log(token);
         setData({token});
       }
       setLoading(false);
@@ -55,7 +54,6 @@ const AuthProvider: React.FC = ({children}) => {
     await AsyncStorage.setItem('@NaveRS:token', token);
 
     api.defaults.headers.authorization = `Bearer ${token}`;
-    console.log('tk', token);
 
     setData({token});
   }, []);

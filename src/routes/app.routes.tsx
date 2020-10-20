@@ -62,13 +62,13 @@ const CustomDrawer = (props: any) => {
         </DrawerContentScrollView>
       </DrawerHeader>
       <DrawerBody>
+        <DrawerItem>
+          <PrimaryText fontSize={22}>Navers</PrimaryText>
+        </DrawerItem>
         <DrawerItem
           onPress={() => {
             signOut();
           }}>
-          <PrimaryText fontSize={22}>Navers</PrimaryText>
-        </DrawerItem>
-        <DrawerItem onPress={() => {}}>
           <PrimaryText fontSize={22}>Sair</PrimaryText>
         </DrawerItem>
       </DrawerBody>

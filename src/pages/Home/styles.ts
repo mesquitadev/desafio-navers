@@ -1,9 +1,9 @@
 import styled from 'styled-components/native';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, FlatList} from 'react-native';
+import {Naver} from '.';
 export const Container = styled.View`
   flex: 1;
   padding-top: 28px;
-  margin: 0px 16px;
 `;
 
 export const Wrapper = styled.View`
@@ -38,19 +38,29 @@ export const ActionsContainer = styled.View`
 `;
 
 export const InfoContainer = styled.View`
-  flex: 1;
-  flex-direction: row;
-  flex-wrap: wrap;
   margin-top: 8px;
   justify-content: flex-start;
   align-self: flex-start;
-  width: 156px;
+  width: 155px;
   height: 60px;
 `;
+
+export const DetailsList = styled(FlatList as new () => FlatList<Naver>).attrs({
+  contentContainerStyle: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    marginHorizontal: 20,
+  },
+})``;
 
 export const styles = StyleSheet.create({
   logo: {
     alignSelf: 'center',
     marginTop: 106,
+  },
+  column: {
+    flex: 1,
+    justifyContent: 'space-between',
   },
 });
