@@ -15,9 +15,10 @@ export const PrimaryText = styled.Text<PrimaryText>`
 interface SecondaryText {
   color?: string;
   alignSelf?: string;
+  fontSize?: number;
 }
 export const SecondaryText = styled.Text<SecondaryText>`
-  font-size: 14px;
+  font-size: ${(props) => (props.fontSize ? props.fontSize : 14)}px;
   font-family: 'Montserrat-Bold';
   color: ${(props) => (props.color ? props.color : '#212121')};
   align-self: ${(props) => (props.alignSelf ? props.alignSelf : 'center')};
