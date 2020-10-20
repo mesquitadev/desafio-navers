@@ -1,5 +1,5 @@
 import React from 'react';
-import {RectButton, RectButtonProperties} from 'react-native-gesture-handler';
+import {RectButtonProperties} from 'react-native-gesture-handler';
 import {Container} from './styles';
 import {PrimaryText} from '../../styles';
 
