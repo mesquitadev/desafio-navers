@@ -39,8 +39,8 @@ export const ActionsContainer = styled.View`
 
 export const InfoContainer = styled.View`
   margin-top: 8px;
-  justify-content: flex-start;
-  align-self: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap;
   width: 155px;
   height: 60px;
 `;

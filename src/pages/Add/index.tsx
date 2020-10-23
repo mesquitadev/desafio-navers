@@ -1,39 +1,82 @@
-import React from 'react';
-import {KeyboardAvoidingView, Platform, ScrollView} from 'react-native';
+import React, {useCallback, useRef, useState} from 'react';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Alert,
+  TextInput,
+} from 'react-native';
 import {Form} from '@unform/mobile';
 import {FormHandles} from '@unform/core';
-import {useNavigation} from '@react-navigation/native';
+import * as Yup from 'yup';
 import {PrimaryText} from '../../styles';
 import {Input, Button} from '../../components';
 import {Container, HeaderBox} from './styles';
+import getValidationErrors from '../../utils/getValidationErrors';
+import api from '../../services/api';
+
+interface FormData {
+  name: string;
+  jobRole: string;
+  birthdate: string;
+  admissionDate: string;
+  project: string;
+  url: string;
+}
 
 const Add: React.FC = () => {
+  const formRef = useRef<FormHandles>(null);
+
+  const admissionDateRef = useRef<TextInput>(null);
+  const jobRoleRef = useRef<TextInput>(null);
+  const birthdateRef = useRef<TextInput>(null);
+  const nameRef = useRef<TextInput>(null);
+  const urlRef = useRef<TextInput>(null);
+  const projectRef = useRef<TextInput>(null);
+
+  const handleSave = useCallback(async (data: FormData) => {
+    try {
+      formRef.current?.setErrors({});
+
+      console.log('data', data);
+      await api.post('/navers', data);
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errors = getValidationErrors(err);
+
+        formRef.current?.setErrors(errors);
+
+        return;
+      }
+
+      Alert.alert(
+        'Erro ao salvar',
+        'Ocorreu um erro ao salvar, verifique os dados inseridos.',
+      );
+    }
+  }, []);
   return (
     <>
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         enabled>
-        <ScrollView
-          keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{flex: 1}}>
+        <ScrollView keyboardShouldPersistTaps="handled">
           <HeaderBox>
             <PrimaryText fontSize={22}>Adicionar Naver</PrimaryText>
           </HeaderBox>
-          <Form>
+          <Form onSubmit={handleSave} ref={formRef}>
             <Container>
               <PrimaryText fontSize={14} alignSelf="flex-start">
                 Nome
               </PrimaryText>
-
               <Input
                 autoCorrect={false}
                 autoCapitalize="none"
-                keyboardType="email-address"
                 name="name"
-                placeholder="E-mail"
+                placeholder="Nome"
                 returnKeyType="next"
-                onSubmitEditing={() => {}}
+                onSubmitEditing={() => nameRef.current?.focus()}
               />
               <PrimaryText fontSize={14} alignSelf="flex-start">
                 Cargo
@@ -41,65 +84,60 @@ const Add: React.FC = () => {
               <Input
                 autoCorrect={false}
                 autoCapitalize="none"
-                keyboardType="email-address"
-                name="email"
-                placeholder="E-mail"
+                name="job_role"
+                placeholder="Cargo"
                 returnKeyType="next"
-                onSubmitEditing={() => {}}
+                onSubmitEditing={() => jobRoleRef.current?.focus()}
               />
               <PrimaryText fontSize={14} alignSelf="flex-start">
-                Senha
+                Data de Nascimento
               </PrimaryText>
               <Input
                 autoCorrect={false}
                 autoCapitalize="none"
-                keyboardType="email-address"
-                name="email"
-                placeholder="E-mail"
+                name="birthdate"
+                placeholder="00/00/0000"
                 returnKeyType="next"
-                onSubmitEditing={() => {}}
+                onSubmitEditing={() => birthdateRef.current?.focus()}
               />
               <PrimaryText fontSize={14} alignSelf="flex-start">
-                Senha
+                Data de Admissao
               </PrimaryText>
               <Input
                 autoCorrect={false}
                 autoCapitalize="none"
-                keyboardType="email-address"
-                name="email"
-                placeholder="E-mail"
+                name="admission_date"
+                placeholder="00/00/0000"
                 returnKeyType="next"
-                onSubmitEditing={() => {}}
+                onSubmitEditing={() => admissionDateRef.current?.focus()}
               />
               <PrimaryText fontSize={14} alignSelf="flex-start">
-                Senha
+                Projetos que Participou
               </PrimaryText>
               <Input
                 autoCorrect={false}
                 autoCapitalize="none"
-                keyboardType="email-address"
-                name="email"
-                placeholder="E-mail"
+                name="project"
+                placeholder="Projetos"
                 returnKeyType="next"
-                onSubmitEditing={() => {}}
+                onSubmitEditing={() => projectRef.current?.focus()}
               />
               <PrimaryText fontSize={14} alignSelf="flex-start">
-                Senha
+                URL da Foto do Naver
               </PrimaryText>
               <Input
                 autoCorrect={false}
                 autoCapitalize="none"
-                keyboardType="email-address"
-                name="email"
-                placeholder="E-mail"
-                returnKeyType="next"
-                onSubmitEditing={() => {}}
+                name="url"
+                placeholder="Url da Foto do Naver"
+                onSubmitEditing={() => urlRef.current?.focus()}
+                returnKeyType="send"
               />
               <Button
                 onPress={() => {
-                  // formRef.current?.submitForm();
+                  formRef.current?.submitForm();
                 }}>
-                Entrar
+                Salvar
               </Button>
             </Container>
           </Form>

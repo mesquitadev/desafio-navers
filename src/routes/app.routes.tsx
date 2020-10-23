@@ -6,7 +6,6 @@ import {
 } from '@react-navigation/drawer';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import {createStackNavigator} from '@react-navigation/stack';
-import {useAuth} from '../hooks/auth';
 //Styles and Components
 import {PrimaryText} from '../styles';
 import {
@@ -46,8 +45,7 @@ const ScreenOptions: ScreenOptions = {
   },
 };
 
-const CustomDrawer = (props: any) => {
-  const {signOut} = useAuth();
+const Header = (props: any) => {
   return (
     <Container>
       <DrawerHeader>
@@ -62,13 +60,10 @@ const CustomDrawer = (props: any) => {
         </DrawerContentScrollView>
       </DrawerHeader>
       <DrawerBody>
-        <DrawerItem>
+        <DrawerItem onPress={() => props.navigation.navigate('Home')}>
           <PrimaryText fontSize={22}>Navers</PrimaryText>
         </DrawerItem>
-        <DrawerItem
-          onPress={() => {
-            signOut();
-          }}>
+        <DrawerItem>
           <PrimaryText fontSize={22}>Sair</PrimaryText>
         </DrawerItem>
       </DrawerBody>
@@ -102,7 +97,7 @@ const DrawerRoutes = () => (
 );
 
 const AuthRoutes: React.FC = () => (
-  <Drawer.Navigator drawerContent={(props) => <CustomDrawer {...props} />}>
+  <Drawer.Navigator drawerContent={(props) => <Header {...props} />}>
     <Stack.Screen name="Home" component={DrawerRoutes} />
   </Drawer.Navigator>
 );
